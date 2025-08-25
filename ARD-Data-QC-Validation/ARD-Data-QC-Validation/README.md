@@ -38,12 +38,6 @@ This QC helps catch mismatches early and builds trust in downstream analytics.
 
 ---
 
-## 📂 Project Structure
-├── README.md
-├── queries/
-│ └── vinemed_vs_ard_qc.sql
----
-
 ## ▶️ How to Run
 1. Open [`queries/vinemed_vs_ard_qc.sql`](queries/vinemed_vs_ard_qc.sql).  
 2. Update schema/table names if needed (replace with your environment).  

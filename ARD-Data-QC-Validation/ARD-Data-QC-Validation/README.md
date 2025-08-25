@@ -15,3 +15,5 @@ Monthly data ingestion from multiple pharma sources (Vinemeds, ICS, Accredo) oft
 - Reduced data mismatches by **95%**
 - Saved 10+ hours/month of manual QC effort
 - Boosted confidence in downstream dashboards and analytics
+
+👉 See the SQL template: [queries/867_qc_template.sql](queries/867_qc_template.sql)

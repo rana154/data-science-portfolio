@@ -1,0 +1,55 @@
+-- ARD vs Source Data QC Validation Query
+
+WITH source_data AS (
+    SELECT
+        'VINEMEDS' AS source,
+        TRADINGPARTNER,
+        NDC,
+        SUM(SS) AS total_qty,
+        MONTH(InvoiceDate) AS month,
+        YEAR(InvoiceDate) AS year
+    FROM ferringanalytics.prod_dw.vinemeds_ferring_weekly_867
+    GROUP BY TRADINGPARTNER, NDC, YEAR(InvoiceDate), MONTH(InvoiceDate)
+
+    UNION ALL
+
+    SELECT
+        'ICS' AS source,
+        PrimReportGroupMN AS TRADINGPARTNER,
+        NDC,
+        SUM(SalesQty) AS total_qty,
+        MONTH(InvoiceDate),
+        YEAR(InvoiceDate)
+    FROM ferringanalytics.prod_dw.ics_fer04_edi867
+    WHERE PrimReportGroupMN NOT IN ('MCKESSON', 'MCKESSON BUFFALO')
+    GROUP BY PrimReportGroupMN, NDC, YEAR(InvoiceDate), MONTH(InvoiceDate)
+),
+
+ard_data AS (
+    SELECT
+        TRADINGPARTNER,
+        NDC,
+        SUM(Qty) AS total_qty,
+        MONTH(InvoiceDate) AS month,
+        YEAR(InvoiceDate) AS year
+    FROM ferringanalytics.mart.ard_sales_market
+    WHERE data_source = 'IQVIA'
+    GROUP BY TRADINGPARTNER, NDC, YEAR(InvoiceDate), MONTH(InvoiceDate)
+)
+
+SELECT
+    s.source,
+    s.TRADINGPARTNER,
+    s.NDC,
+    s.year,
+    s.month,
+    s.total_qty AS source_qty,
+    a.total_qty AS ard_qty,
+    (s.total_qty - a.total_qty) AS variance
+FROM source_data s
+LEFT JOIN ard_data a
+    ON s.TRADINGPARTNER = a.TRADINGPARTNER
+   AND s.NDC = a.NDC
+   AND s.year = a.year
+   AND s.month = a.month
+ORDER BY s.year, s.month, s.source, s.TRADINGPARTNER;

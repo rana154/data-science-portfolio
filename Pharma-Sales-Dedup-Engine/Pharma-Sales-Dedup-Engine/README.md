@@ -48,6 +48,45 @@ The solution ensures accuracy between source claims data (IQVIA, IMS) and aggreg
 - QC_STATUS (PASSED or FAILED)
 - Output Unified QC Table → Easy to feed into BI tools
 
+  ### **🚀 SQL Logic**
+
+The framework compares ARD vs. Source claims across datasets and flags mismatches:
+
+``` WITH ard_rx AS (
+    SELECT  
+        product_group_name AS product,
+        DATE_TRUNC('month', month_date) AS claims_month,
+        COUNT(DISTINCT claim_id) AS ard_count
+    FROM ferringanalytics.mart.ard_claims
+    WHERE data_source = 'IQVIA LAAD ADSTILADRIN'
+      AND claim_source_type = 'RX CLAIM'
+    GROUP BY 1,2
+),
+src_rx AS (
+    SELECT
+        dp.PRODUCT_GROUP AS product,
+        DATE_TRUNC('month', rf.SVC_DT) AS claims_month,
+        COUNT(DISTINCT rf.CLAIM_ID) AS source_count
+    FROM ferring_dw_prod.iqvia.adstiladrin_rxfact_lad rf
+    JOIN ferring_dw_prod.iqvia.adstiladrin_dim_product_lad dp
+        ON rf.NDC_CD = dp.NDC_CD
+    GROUP BY 1,2
+)
+SELECT 
+    COALESCE(a.product,b.product) AS product,
+    COALESCE(a.claims_month,b.claims_month) AS sale_month,
+    COALESCE(a.ard_count,0) AS ARD_QTY,
+    COALESCE(b.source_count,0) AS SRC_QTY,
+    CASE 
+        WHEN COALESCE(a.ard_count,0) <> COALESCE(b.source_count,0) 
+        THEN 'QC FAILED'
+        ELSE 'QC PASSED'
+    END AS qc_status
+FROM ard_rx a
+FULL OUTER JOIN src_rx b
+    ON a.product = b.product AND a.claims_month = b.claims_month;
+```
+
 ### **📊 Dashboard Example (Power BI / Tableau)**
 
 - Key visualizations you can build:
@@ -62,7 +101,7 @@ The solution ensures accuracy between source claims data (IQVIA, IMS) and aggreg
 - Improved data reliability for healthcare market analytics
 - Enabled faster reporting & regulatory compliance in pharma analytics
 
-**#🔮 Next Steps**
+### **🔮 Next Steps**
 
 - Automate SQL execution via Airflow or dbt
 - Expand framework to international datasets

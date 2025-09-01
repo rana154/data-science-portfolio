@@ -1,11 +1,12 @@
-📊 Healthcare Claims QC Framework (SQL + BI)
-🔍 Project Overview
+**##📊 Healthcare Claims QC Framework (SQL + BI)**
+
+**#🔍 Project Overview**
 
 This project builds an automated data quality and QC validation framework for healthcare claims data (RX & MX claims) across multiple products (e.g., Adstiladrin, Menopur, Endometrin, Rebyota, Euflexxa).
 
 The solution ensures accuracy between source claims data (IQVIA, IMS) and aggregated ARD datasets, flagging mismatches with a QC status (Passed/Failed) for proactive issue resolution.
 
-⚙️ Tech Stack
+**#⚙️ Tech Stack**
 
 SQL (Snowflake / T-SQL) → Data extraction, joins, QC logic
 
@@ -15,7 +16,7 @@ Power BI / Tableau / Plotly → QC dashboard visualization
 
 GitHub → Version control & collaboration
 
-📁 Project Structure
+**#📁 Project Structure**
 
 healthcare-qc-framework/
 │
@@ -26,7 +27,7 @@ healthcare-qc-framework/
 │   └── qc_dashboard.pbix         
 └── README.md
 
-🛠️ Key Features
+**#🛠️ Key Features**
 
 ✅ Validates RX & MX claims across multiple therapeutic areas
 ✅ Automated QC rules flag mismatches with QC PASSED / QC FAILED
@@ -34,7 +35,7 @@ healthcare-qc-framework/
 ✅ Scalable – easily extendable to new drugs, markets, or claim sources
 ✅ Dashboard highlights trendlines of QC issues, ARD vs. Source counts, and error distributions
 
-🚀 Step-by-Step Process
+**#🚀 Step-by-Step Process**
 
 Extract ARD claims from ferringanalytics.mart.ard_claims
 
@@ -54,7 +55,7 @@ QC_STATUS (PASSED or FAILED)
 
 Output Unified QC Table → Easy to feed into BI tools
 
-📊 Dashboard Example (Power BI / Tableau)
+**#📊 Dashboard Example (Power BI / Tableau)**
 
 Key visualizations you can build:
 
@@ -68,7 +69,7 @@ QC Failure Rate (% failed records over time)
 
 (Here you can later add a screenshot of your Power BI or Tableau dashboard.)
 
-🏆 Impact
+**#🏆 Impact**
 
 Reduced manual QC effort by 30% with automated checks
 
@@ -76,7 +77,7 @@ Improved data reliability for healthcare market analytics
 
 Enabled faster reporting & regulatory compliance in pharma analytics
 
-🔮 Next Steps
+**#🔮 Next Steps**
 
 Automate SQL execution via Airflow or dbt
 

@@ -50,7 +50,7 @@ University of Delhi, India
 I am open to freelance data analytics projects, business intelligence opportunities and professional collaborations.
 
 - GitHub: [github.com/rana154](https://github.com/rana154)
-- LinkedIn: [Connect with me](https://www.linkedin.com/)
+- LinkedIn: [Connect with me](https://www.linkedin.com/in/deepakrana15499/)
 
 
 
